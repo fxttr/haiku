@@ -11,12 +11,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new().service(web::scope("api/v1/snippets").configure(endpoints::snippets::configure))
     })
-    .bind("0.0.0.0:80")?
+    .bind("0.0.0.0:8080")?
     .run()
     .await
-}
-
-#[get("/snippets")]
-pub async fn get_users() -> impl Responder {
-    format!("hello from get users")
 }
