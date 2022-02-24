@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "haiku-error",
+    "haiku-models-common",
+    "haiku-svc-snippets"
+]

@@ -21,3 +21,4 @@ actix-service = "2.0.2"
 alcoholic_jwt = "1.0.1"
 reqwest = "0.11.9"
 haiku-error = { path = "../haiku-error" }
+dotenv = "0.15.0"
