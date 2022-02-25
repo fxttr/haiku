@@ -16,6 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+use diesel::PgConnection;
+use diesel::result::Error;
 
--- This file should undo anything in `up.sql`
-DROP TABLE languages
+pub trait BaseQuery {
+    fn find(connection: &PgConnection) -> Result<Vec<Self>, Error> where Self: Sized;
+    fn find_by_id(connection: &PgConnection, request_id: i32) -> Result<Self, Error> where Self: Sized;
+}

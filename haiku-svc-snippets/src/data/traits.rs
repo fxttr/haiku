@@ -17,5 +17,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
--- This file should undo anything in `up.sql`
-DROP TABLE languages
+pub mod base_query;

@@ -17,29 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::schema::snippets::dsl::snippets;
-use crate::data::traits::base_query::BaseQuery;
+use diesel::PgConnection;
+use diesel::r2d2::ConnectionManager;
 use diesel::result::Error;
-use diesel::{ExpressionMethods, PgConnection, QueryDsl, Queryable, RunQueryDsl};
-use serde::Serialize;
+use r2d2::PooledConnection;
+use crate::data::query::snippet::Snippet;
+use crate::data::traits::base_query::BaseQuery;
 
-#[derive(Queryable, Serialize)]
-pub struct Snippet {
-    pub id: i32,
-    pub link: String,
-    pub code: String,
+pub struct SnippetsController {
+    connection: PooledConnection<ConnectionManager<PgConnection>>
 }
 
-impl BaseQuery for Snippet {
-    fn find(connection: &PgConnection) -> Result<Vec<Snippet>, Error> {
-        snippets.load::<Snippet>(connection)
+impl SnippetsController {
+    pub fn new(connection: PooledConnection<ConnectionManager<PgConnection>>) -> Self {
+        SnippetsController{
+            connection
+        }
     }
 
-    fn find_by_id(connection: &PgConnection, request_id: i32) -> Result<Snippet, Error> {
-        use crate::schema::snippets::id;
+    pub fn find(&self) -> Result<Vec<Snippet>, Error> {
+        Snippet::find(&self.connection)
+    }
 
-        snippets
-            .filter(id.eq(request_id))
-            .first::<Snippet>(connection)
+    pub fn find_by_id(&self, id: i32) -> Result<Snippet, Error> {
+        Snippet::find_by_id(&self.connection, id)
     }
 }
